@@ -1,0 +1,31 @@
+releases:
+  - name: chartmuseum
+    namespace: chartmuseum
+    chart: stable/chartmuseum
+    version: 2.13.3
+    values:
+      - ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: traefik
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+          hosts:
+            - name: helm-charts.fitfit.dk
+              path: /
+              tls: true
+              tlsSecret: chartmuseum-tls
+      - env:
+          open:
+            DISABLE_API: false
+            STORAGE: local
+          secret:
+            BASIC_AUTH_USER: {{ requiredEnv "CHARTMUSEUM_AUTH_USER" }}
+            BASIC_AUTH_PASS: {{ requiredEnv "CHARTMUSEUM_AUTH_PASS" }}
+      - persistence:
+          enabled: true
+          accessMode: ReadWriteOnce
+          size: 100M
+
+repositories:
+  - name: stable
+    url: https://kubernetes-charts.storage.googleapis.com
