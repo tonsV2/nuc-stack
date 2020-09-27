@@ -5,22 +5,22 @@ environments:
       - installed:
           prometheus: true
           chartmuseum: false
-          whoamiMn: true
+          whoamiMn: false
       - version:
           prometheus: 9.3.2
           chartmuseum: 0
-          whoamiMn: 0.6.0
+          whoamiMn: 0
   dev:
     values:
       - kubeContext: nuc
       - installed:
           prometheus: false
           chartmuseum: false
-          whoamiMn: true
+          whoamiMn: false
       - version:
           prometheus: 0
           chartmuseum: 0
-          whoamiMn: 0.6.0
+          whoamiMn: 0
   test:
     values:
       - kubeContext: nuc
