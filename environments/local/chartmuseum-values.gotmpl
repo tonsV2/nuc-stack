@@ -1,0 +1,16 @@
+ingress:
+  enabled: true
+  hosts:
+    - name: helm-charts..127.0.0.1.nip.io
+      path: /
+env:
+  open:
+    DISABLE_API: false
+    STORAGE: local
+  secret:
+    BASIC_AUTH_USER: {{ requiredEnv "CHARTMUSEUM_AUTH_USER" }}
+    BASIC_AUTH_PASS: {{ requiredEnv "CHARTMUSEUM_AUTH_PASS" }}
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 100M

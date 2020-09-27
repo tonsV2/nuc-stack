@@ -1,0 +1,13 @@
+grafana:
+  adminPassword: {{ requiredEnv "GRAFANA_ADMIN_PASSWORD" }}
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - grafana.fitfit.dk
+    path: /
+    tls:
+      - secretName: prometheus-tls
+        hosts:
+          - grafana.fitfit.dk

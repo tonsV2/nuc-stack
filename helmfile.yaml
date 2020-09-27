@@ -1,3 +1,41 @@
+environments:
+  local:
+    values:
+      - kubeContext: default
+      - installed:
+          prometheus: true
+          chartmuseum: false
+      - version:
+          prometheus: 9.3.2
+          chartmuseum: 0
+  dev:
+    values:
+      - kubeContext: nuc
+      - installed:
+          prometheus: false
+          chartmuseum: false
+      - version:
+          prometheus: 0
+          chartmuseum: 0
+  test:
+    values:
+      - kubeContext: nuc
+      - installed:
+          prometheus: false
+          chartmuseum: false
+      - version:
+          prometheus: 0
+          chartmuseum: 0
+  prod:
+    values:
+      - kubeContext: nuc
+      - installed:
+          prometheus: true
+          chartmuseum: true
+      - version:
+          prometheus: 9.3.2
+          chartmuseum: 2.13.3
+
 releases:
   - name: prometheus
     namespace: prometheus
@@ -5,47 +43,20 @@ releases:
 #    chart: prometheus-community/kube-prometheus-stack
 #    version: 9.4.3
     chart: stable/prometheus-operator
-    version: 9.3.2
+    version: {{ .Values.version.prometheus }}
+    installed: {{ .Values.installed.prometheus }}
+    kubeContext: {{ .Values.kubeContext }}
     values:
-      - grafana:
-          adminPassword: {{ requiredEnv "GRAFANA_ADMIN_PASSWORD" }}
-          ingress:
-            enabled: true
-            annotations:
-              cert-manager.io/cluster-issuer: letsencrypt-prod
-            hosts:
-              - grafana.fitfit.dk
-            path: /
-            tls:
-              - secretName: prometheus-tls
-                hosts:
-                  - grafana.fitfit.dk
+      - environments/{{ .Environment.Name }}/prometheus-values.gotmpl
 
   - name: chartmuseum
     namespace: chartmuseum
     chart: stable/chartmuseum
-    version: 2.13.3
+    version: {{ .Values.version.chartmuseum }}
+    installed: {{ .Values.installed.chartmuseum }}
+    kubeContext: {{ .Values.kubeContext }}
     values:
-      - ingress:
-          enabled: true
-          annotations:
-            cert-manager.io/cluster-issuer: letsencrypt-prod
-          hosts:
-            - name: helm-charts.fitfit.dk
-              path: /
-              tls: true
-              tlsSecret: chartmuseum-tls
-      - env:
-          open:
-            DISABLE_API: false
-            STORAGE: local
-          secret:
-            BASIC_AUTH_USER: {{ requiredEnv "CHARTMUSEUM_AUTH_USER" }}
-            BASIC_AUTH_PASS: {{ requiredEnv "CHARTMUSEUM_AUTH_PASS" }}
-      - persistence:
-          enabled: true
-          accessMode: ReadWriteOnce
-          size: 100M
+      - environments/{{ .Environment.Name }}/chartmuseum-values.gotmpl
 
 repositories:
 #  - name: prometheus-community

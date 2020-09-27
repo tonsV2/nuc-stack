@@ -1,0 +1,20 @@
+ingress:
+  enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - name: helm-charts.fitfit.dk
+      path: /
+      tls: true
+      tlsSecret: chartmuseum-tls
+env:
+  open:
+    DISABLE_API: false
+    STORAGE: local
+  secret:
+    BASIC_AUTH_USER: {{ requiredEnv "CHARTMUSEUM_AUTH_USER" }}
+    BASIC_AUTH_PASS: {{ requiredEnv "CHARTMUSEUM_AUTH_PASS" }}
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 100M
