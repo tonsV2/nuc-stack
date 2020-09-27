@@ -5,38 +5,55 @@ environments:
       - installed:
           prometheus: true
           chartmuseum: false
+          whoamiMn: true
       - version:
           prometheus: 9.3.2
           chartmuseum: 0
+          whoamiMn: 0.6.0
   dev:
     values:
       - kubeContext: nuc
       - installed:
           prometheus: false
           chartmuseum: false
+          whoamiMn: true
       - version:
           prometheus: 0
           chartmuseum: 0
+          whoamiMn: 0.6.0
   test:
     values:
       - kubeContext: nuc
       - installed:
           prometheus: false
           chartmuseum: false
+          whoamiMn: true
       - version:
           prometheus: 0
           chartmuseum: 0
+          whoamiMn: 0.6.0
   prod:
     values:
       - kubeContext: nuc
       - installed:
           prometheus: true
           chartmuseum: true
+          whoamiMn: true
       - version:
           prometheus: 9.3.2
           chartmuseum: 2.13.3
+          whoamiMn: 0.6.0
 
 releases:
+  - name: whoami-mn
+    namespace: whoami-mn-{{ .Environment.Name }}
+    chart: tons/whoami-mn
+    version: {{ .Values.version.whoamiMn }}
+    installed: {{ .Values.installed.whoamiMn }}
+    kubeContext: {{ .Values.kubeContext }}
+    values:
+      - environments/{{ .Environment.Name }}/whoami-mn-values.yaml
+
   - name: prometheus
     namespace: prometheus
 # https://github.com/helm/charts/issues/21690
@@ -63,3 +80,7 @@ repositories:
 #    url: https://prometheus-community.github.io/helm-charts
   - name: stable
     url: https://kubernetes-charts.storage.googleapis.com
+  - name: tons
+    url: https://helm-charts.fitfit.dk
+    username: {{ requiredEnv "CHARTMUSEUM_AUTH_USER" }}
+    password: {{ requiredEnv "CHARTMUSEUM_AUTH_PASS" }}

@@ -1,0 +1,4 @@
+ingress:
+  enabled: true
+  hostname: whoami-mn.fitfit.dk
+  certIssuer: letsencrypt-prod

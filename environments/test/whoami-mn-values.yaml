@@ -1,0 +1,4 @@
+ingress:
+  enabled: true
+  hostname: whoami-mn.test.fitfit.dk
+  certIssuer: letsencrypt-staging
