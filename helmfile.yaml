@@ -1,4 +1,26 @@
 releases:
+  - name: prometheus
+    namespace: prometheus
+# https://github.com/helm/charts/issues/21690
+#    chart: prometheus-community/kube-prometheus-stack
+#    version: 9.4.3
+    chart: stable/prometheus-operator
+    version: 9.3.2
+    values:
+      - grafana:
+          adminPassword: {{ requiredEnv "GRAFANA_ADMIN_PASSWORD" }}
+          ingress:
+            enabled: true
+            annotations:
+              cert-manager.io/cluster-issuer: letsencrypt-prod
+            hosts:
+              - grafana.fitfit.dk
+            path: /
+            tls:
+              - secretName: prometheus-tls
+                hosts:
+                  - grafana.fitfit.dk
+
   - name: chartmuseum
     namespace: chartmuseum
     chart: stable/chartmuseum
@@ -7,7 +29,6 @@ releases:
       - ingress:
           enabled: true
           annotations:
-            kubernetes.io/ingress.class: traefik
             cert-manager.io/cluster-issuer: letsencrypt-prod
           hosts:
             - name: helm-charts.fitfit.dk
@@ -27,5 +48,8 @@ releases:
           size: 100M
 
 repositories:
+#  - name: prometheus-community
+#    url: https://prometheus-community.github.io/helm-charts
   - name: stable
     url: https://kubernetes-charts.storage.googleapis.com
+
