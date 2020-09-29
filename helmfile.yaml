@@ -50,15 +50,18 @@ environments:
           prometheus: 9.3.2
           chartmuseum: 2.13.3
           whoamiMn: 0.6.0
-          surfScreenshotter: 0.3.0
+          surfScreenshotter: 0.4.0
 
 releases:
   - name: surf-screenshotter
     namespace: surf-screenshotter-{{ .Environment.Name }}
     chart: tons/surf-screenshotter
+    verify: true
     version: {{ .Values.version.surfScreenshotter }}
     installed: {{ .Values.installed.surfScreenshotter }}
     kubeContext: {{ .Values.kubeContext }}
+    values:
+      - environments/{{ .Environment.Name }}/surf-screenshotter-values.yaml
 
   - name: whoami-mn
     namespace: whoami-mn-{{ .Environment.Name }}

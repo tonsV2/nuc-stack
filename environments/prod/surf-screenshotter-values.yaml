@@ -1,0 +1,4 @@
+ingress:
+  enabled: true
+  hostname: screenshots.surfstation.dk
+  certIssuer: letsencrypt-prod
