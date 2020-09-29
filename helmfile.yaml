@@ -36,7 +36,7 @@ environments:
       - version:
           prometheus: 0
           chartmuseum: 0
-          whoamiMn: 0.6.0
+          whoamiMn: 0.7.0
           surfScreenshotter: 0
   prod:
     values:
@@ -63,6 +63,7 @@ releases:
   - name: whoami-mn
     namespace: whoami-mn-{{ .Environment.Name }}
     chart: tons/whoami-mn
+    verify: true
     version: {{ .Values.version.whoamiMn }}
     installed: {{ .Values.installed.whoamiMn }}
     kubeContext: {{ .Values.kubeContext }}
