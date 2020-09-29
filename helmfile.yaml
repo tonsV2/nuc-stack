@@ -6,10 +6,12 @@ environments:
           prometheus: true
           chartmuseum: false
           whoamiMn: false
+          surfScreenshotter: false
       - version:
           prometheus: 9.3.2
           chartmuseum: 0
           whoamiMn: 0
+          surfScreenshotter: 0
   dev:
     values:
       - kubeContext: nuc
@@ -17,10 +19,12 @@ environments:
           prometheus: false
           chartmuseum: false
           whoamiMn: false
+          surfScreenshotter: false
       - version:
           prometheus: 0
           chartmuseum: 0
           whoamiMn: 0
+          surfScreenshotter: 0
   test:
     values:
       - kubeContext: nuc
@@ -28,10 +32,12 @@ environments:
           prometheus: false
           chartmuseum: false
           whoamiMn: true
+          surfScreenshotter: false
       - version:
           prometheus: 0
           chartmuseum: 0
           whoamiMn: 0.6.0
+          surfScreenshotter: 0
   prod:
     values:
       - kubeContext: nuc
@@ -39,12 +45,21 @@ environments:
           prometheus: true
           chartmuseum: true
           whoamiMn: true
+          surfScreenshotter: true
       - version:
           prometheus: 9.3.2
           chartmuseum: 2.13.3
           whoamiMn: 0.6.0
+          surfScreenshotter: 0.3.0
 
 releases:
+  - name: surf-screenshotter
+    namespace: surf-screenshotter-{{ .Environment.Name }}
+    chart: tons/surf-screenshotter
+    version: {{ .Values.version.surfScreenshotter }}
+    installed: {{ .Values.installed.surfScreenshotter }}
+    kubeContext: {{ .Values.kubeContext }}
+
   - name: whoami-mn
     namespace: whoami-mn-{{ .Environment.Name }}
     chart: tons/whoami-mn
