@@ -42,7 +42,7 @@ environments:
     values:
       - kubeContext: nuc
       - installed:
-          prometheus: true
+          prometheus: false
           chartmuseum: true
           whoamiMn: true
           surfScreenshotter: true
