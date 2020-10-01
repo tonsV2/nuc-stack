@@ -19,12 +19,12 @@ environments:
           prometheus: false
           chartmuseum: false
           whoamiMn: false
-          surfScreenshotter: false
+          surfScreenshotter: true
       - version:
           prometheus: 0
           chartmuseum: 0
           whoamiMn: 0
-          surfScreenshotter: 0
+          surfScreenshotter: 0.6.0
   test:
     values:
       - kubeContext: nuc

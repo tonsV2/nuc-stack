@@ -1,0 +1,4 @@
+ingress:
+  enabled: true
+  hostname: screenshots.dev.surfstation.dk
+  certIssuer: letsencrypt-staging
