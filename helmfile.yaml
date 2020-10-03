@@ -2,63 +2,71 @@ environments:
   local:
     values:
       - kubeContext: default
-      - installed:
-          prometheus: true
-          chartmuseum: false
-          whoamiMn: false
-          surfScreenshotter: false
-      - version:
-          prometheus: 9.3.2
-          chartmuseum: 0
-          whoamiMn: 0
-          surfScreenshotter: 0
+      - surfScreenshotter:
+          installed: false
+          version: 0
+      - whoamiMn:
+          installed: false
+          version: 0
+      - chartmuseum:
+          installed: false
+          version: 0
+      - prometheus:
+          installed: true
+          version: 9.3.2
   dev:
     values:
       - kubeContext: nuc
-      - installed:
-          prometheus: false
-          chartmuseum: false
-          whoamiMn: false
-          surfScreenshotter: true
-      - version:
-          prometheus: 0
-          chartmuseum: 0
-          whoamiMn: 0
-          surfScreenshotter: 0.6.0
+      - surfScreenshotter:
+          installed: false
+          version: 0
+      - whoamiMn:
+          installed: false
+          version: 0
+      - chartmuseum:
+          installed: false
+          version: 0
+      - prometheus:
+          installed: false
+          version: 0
   test:
     values:
       - kubeContext: nuc
-      - installed:
-          prometheus: false
-          chartmuseum: false
-          whoamiMn: true
-          surfScreenshotter: false
-      - version:
-          prometheus: 0
-          chartmuseum: 0
-          whoamiMn: 0.7.0
-          surfScreenshotter: 0
+      - surfScreenshotter:
+          installed: false
+          version: 0
+      - whoamiMn:
+          installed: true
+          version: 0.7.0
+      - chartmuseum:
+          installed: false
+          version: 0
+      - prometheus:
+          installed: false
+          version: 0
   prod:
     values:
       - kubeContext: nuc
-      - installed:
-          prometheus: false
-          chartmuseum: true
-          whoamiMn: true
-          surfScreenshotter: true
-      - version:
-          prometheus: 9.3.2
-          chartmuseum: 2.13.3
-          whoamiMn: 0.6.0
-          surfScreenshotter: 0.5.0
+      - surfScreenshotter:
+          installed: true
+          version: 0.5.0
+      - whoamiMn:
+          installed: true
+          version: 0.7.0
+      - chartmuseum:
+          installed: true
+          version: 2.13.3
+      - prometheus:
+          installed: false
+          version: 9.3.2
 
 releases:
   - name: surf-screenshotter
     namespace: surf-screenshotter-{{ .Environment.Name }}
     chart: tons/surf-screenshotter
     verify: true
-    version: {{ .Values.version.surfScreenshotter }}
-    installed: {{ .Values.installed.surfScreenshotter }}
+    version: {{ .Values.surfScreenshotter.version }}
+    installed: {{ .Values.surfScreenshotter.installed }}
     kubeContext: {{ .Values.kubeContext }}
     values:
       - environments/{{ .Environment.Name }}/surf-screenshotter-values.yaml
@@ -67,8 +75,8 @@ releases:
     namespace: whoami-mn-{{ .Environment.Name }}
     chart: tons/whoami-mn
     verify: true
-    version: {{ .Values.version.whoamiMn }}
-    installed: {{ .Values.installed.whoamiMn }}
+    version: {{ .Values.whoamiMn.version }}
+    installed: {{ .Values.whoamiMn.installed }}
     kubeContext: {{ .Values.kubeContext }}
     values:
       - environments/{{ .Environment.Name }}/whoami-mn-values.yaml
@@ -79,8 +87,8 @@ releases:
 #    chart: prometheus-community/kube-prometheus-stack
 #    version: 9.4.3
     chart: stable/prometheus-operator
-    version: {{ .Values.version.prometheus }}
-    installed: {{ .Values.installed.prometheus }}
+    version: {{ .Values.prometheus.version }}
+    installed: {{ .Values.prometheus.installed }}
     kubeContext: {{ .Values.kubeContext }}
     values:
       - environments/{{ .Environment.Name }}/prometheus-values.gotmpl
@@ -88,8 +96,8 @@ releases:
   - name: chartmuseum
     namespace: chartmuseum
     chart: stable/chartmuseum
-    version: {{ .Values.version.chartmuseum }}
-    installed: {{ .Values.installed.chartmuseum }}
+    version: {{ .Values.chartmuseum.version }}
+    installed: {{ .Values.chartmuseum.installed }}
     kubeContext: {{ .Values.kubeContext }}
     values:
       - environments/{{ .Environment.Name }}/chartmuseum-values.gotmpl
