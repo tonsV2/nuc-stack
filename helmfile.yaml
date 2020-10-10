@@ -69,7 +69,7 @@ releases:
     installed: {{ .Values.surfScreenshotter.installed }}
     kubeContext: {{ .Values.kubeContext }}
     values:
-      - environments/{{ .Environment.Name }}/surf-screenshotter-values.yaml
+      - values/{{ .Environment.Name }}/surf-screenshotter-values.yaml
 
   - name: whoami-mn
     namespace: whoami-mn-{{ .Environment.Name }}
@@ -79,7 +79,7 @@ releases:
     installed: {{ .Values.whoamiMn.installed }}
     kubeContext: {{ .Values.kubeContext }}
     values:
-      - environments/{{ .Environment.Name }}/whoami-mn-values.yaml
+      - values/{{ .Environment.Name }}/whoami-mn-values.yaml
 
   - name: prometheus
     namespace: prometheus
@@ -91,7 +91,7 @@ releases:
     installed: {{ .Values.prometheus.installed }}
     kubeContext: {{ .Values.kubeContext }}
     values:
-      - environments/{{ .Environment.Name }}/prometheus-values.gotmpl
+      - values/{{ .Environment.Name }}/prometheus-values.gotmpl
 
   - name: chartmuseum
     namespace: chartmuseum
@@ -100,7 +100,7 @@ releases:
     installed: {{ .Values.chartmuseum.installed }}
     kubeContext: {{ .Values.kubeContext }}
     values:
-      - environments/{{ .Environment.Name }}/chartmuseum-values.gotmpl
+      - values/{{ .Environment.Name }}/chartmuseum-values.gotmpl
 
 repositories:
 #  - name: prometheus-community
