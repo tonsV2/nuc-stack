@@ -52,7 +52,7 @@ environments:
           version: 0.5.0
       - whoamiMn:
           installed: true
-          version: 0.7.0
+          version: 0.6.0
       - chartmuseum:
           installed: true
           version: 2.13.3
