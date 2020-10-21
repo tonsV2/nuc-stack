@@ -1,0 +1,9 @@
+ais:
+  username: {{ requiredEnv "AIS_USERNAME" }}
+  password: {{ requiredEnv "AIS_PASSWORD" }}
+
+nginx:
+  ingress:
+    enabled: true
+    hostname: helsingoer.surfstation.dk
+    certIssuer: letsencrypt-prod

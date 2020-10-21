@@ -5,6 +5,9 @@ environments:
       - surfScreenshotter:
           installed: false
           version: 0
+      - surfAisScreenshot:
+          installed: false
+          version: 0
       - whoamiMn:
           installed: false
           version: 0
@@ -18,6 +21,9 @@ environments:
     values:
       - kubeContext: nuc
       - surfScreenshotter:
+          installed: false
+          version: 0
+      - surfAisScreenshot:
           installed: false
           version: 0
       - whoamiMn:
@@ -35,6 +41,9 @@ environments:
       - surfScreenshotter:
           installed: false
           version: 0
+      - surfAisScreenshot:
+          installed: false
+          version: 0
       - whoamiMn:
           installed: true
           version: 0.7.0
@@ -50,6 +59,9 @@ environments:
       - surfScreenshotter:
           installed: true
           version: 0.5.0
+      - surfAisScreenshot:
+          installed: true
+          version: 1.0.0
       - whoamiMn:
           installed: true
           version: 0.6.0
@@ -61,6 +73,16 @@ environments:
           version: 9.3.2
 
 releases:
+  - name: surf-ais-screenshot
+    namespace: surf-ais-screenshot-{{ .Environment.Name }}
+    chart: tons/surf-ais-screenshot
+    verify: true
+    version: {{ .Values.surfAisScreenshot.version }}
+    installed: {{ .Values.surfAisScreenshot.installed }}
+    kubeContext: {{ .Values.kubeContext }}
+    values:
+      - values/{{ .Environment.Name }}/surf-ais-screenshot-values.gotmpl
+
   - name: surf-screenshotter
     namespace: surf-screenshotter-{{ .Environment.Name }}
     chart: tons/surf-screenshotter
