@@ -7,6 +7,7 @@ env:
   open:
     DISABLE_API: false
     STORAGE: local
+    AUTH_ANONYMOUS_GET: true
   secret:
     BASIC_AUTH_USER: {{ requiredEnv "CHARTMUSEUM_AUTH_USER" }}
     BASIC_AUTH_PASS: {{ requiredEnv "CHARTMUSEUM_AUTH_PASS" }}
