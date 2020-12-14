@@ -1,0 +1,6 @@
+postgresqlUsername: {{ requiredEnv "EASY_EDIT_DATABASE_USERNAME" }}
+postgresqlPassword: {{ requiredEnv "EASY_EDIT_DATABASE_PASSWORD" }}
+postgresqlDatabase: {{ requiredEnv "EASY_EDIT_DATABASE_DATABASE_NAME" }}
+persistence:
+  size: 100M
+  storageClass: local-path

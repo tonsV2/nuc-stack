@@ -2,6 +2,12 @@ environments:
   local:
     values:
       - kubeContext: default
+      - surfEasyEdit:
+          installed: true
+          version: 1.0.0
+      - surfEasyEditDatabase:
+          installed: true
+          version: 10.1.1
       - autoYoutubeDl:
           installed: false
           version: 0
@@ -23,6 +29,12 @@ environments:
   dev:
     values:
       - kubeContext: nuc
+      - surfEasyEdit:
+          installed: false
+          version: 0
+      - surfEasyDatabase:
+          installed: false
+          version: 0
       - autoYoutubeDl:
           installed: false
           version: 0
@@ -44,6 +56,12 @@ environments:
   test:
     values:
       - kubeContext: nuc
+      - surfEasyEdit:
+          installed: false
+          version: 0
+      - surfEasyEditDatabase:
+          installed: false
+          version: 0
       - autoYoutubeDl:
           installed: false
           version: 0
@@ -65,6 +83,12 @@ environments:
   prod:
     values:
       - kubeContext: nuc
+      - surfEasyEdit:
+          installed: true
+          version: 1.2.0
+      - surfEasyEditDatabase:
+          installed: true
+          version: 10.1.1
       - autoYoutubeDl:
           installed: true
           version: 1.0.0
@@ -85,6 +109,26 @@ environments:
           version: 9.3.2
 
 releases:
+  - name: surf-easy-edit
+    namespace: surf-easy-edit-{{ .Environment.Name }}
+    chart: tons/surf-easy-edit
+    verify: true
+    version: {{ .Values.surfEasyEdit.version }}
+    installed: {{ .Values.surfEasyEdit.installed }}
+    kubeContext: {{ .Values.kubeContext }}
+    values:
+      - values/{{ .Environment.Name }}/surf-easy-edit-values.gotmpl
+
+  - name: surf-easy-edit-database
+    namespace: surf-easy-edit-{{ .Environment.Name }}
+    chart: bitnami/postgresql
+    verify: false
+    version: {{ .Values.surfEasyEditDatabase.version }}
+    installed: {{ .Values.surfEasyEditDatabase.installed }}
+    kubeContext: {{ .Values.kubeContext }}
+    values:
+      - values/{{ .Environment.Name }}/surf-easy-edit-database-values.gotmpl
+
   - name: auto-youtube-dl
     namespace: auto-youtube-dl
     chart: tons/auto-youtube-dl
@@ -152,3 +196,5 @@ repositories:
     url: https://charts.helm.sh/stable
   - name: tons
     url: https://helm-charts.fitfit.dk
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
