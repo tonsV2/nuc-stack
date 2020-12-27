@@ -2,6 +2,11 @@ config:
   filters:
     - kind: Pod
       apiVersion: v1
+#    namespaces:
+#      include:
+#        - surf-screenshotter-dev
+#      ignore:
+#        - heptio-sonobuoy
       conditions:
         - status.containerStatuses[*].state.terminated.exitCode != 0
       message:
@@ -10,10 +15,23 @@ config:
           NAME: metadata.name
           NAMESPACE: metadata.namespace
 
+    - kind: Pod
+      apiVersion: v1
+      conditions:
+        - status.containerStatuses[*].restartCount > 10
+      message:
+        template: "Pod: {NAME} in {NAMESPACE} has restarted {RESTART_COUNT} times"
+        attributes:
+          NAME: metadata.name
+          NAMESPACE: metadata.namespace
+          RESTART_COUNT: status.containerStatuses[*].restartCount
+
     - kind: Event
       apiVersion: v1
       conditions:
         - type == Warning
+#      - reason != ImageGCFailed
+#      - reason != FreeDiskSpaceFailed
       message:
         template: "Event: Warning {NAME} in {NAMESPACE} (reason: {REASON}, message: {MESSAGE})"
         attributes:
@@ -22,12 +40,32 @@ config:
           REASON: reason
           MESSAGE: message
 
+    - kind: Job
+      apiVersion: batch/v1
+      conditions:
+        - status.conditions[*].type == Failed
+      message:
+        template: "Job: {NAME} in {NAMESPACE} failed (reason: {REASON}, message: {MESSAGE})"
+        attributes:
+          NAME: metadata.name
+          NAMESPACE: metadata.namespace
+          REASON: status.conditions[*].reason
+          MESSAGE: status.conditions[*].message
+
   handlers:
     slack:
       # TODO: For some reason the SLACK_HANDLER_CHANNEL variable won't be interpolated if the value begins with '#'
       #  The current solution is simply to list specify the channel without the '#' prefix
       channel: nuc
       token: $SLACK_HANDLER_TOKEN
+#    smtp:
+#      from: $SMTP_HANDLER_FROM
+#      password: $SMTP_HANDLER_PASSWORD
+#      host: smtp.gmail.com
+#      port: 587
+#      tls: true
+#      to:
+#        - $SMTP_HANDLER_TO
 
 env:
   SLACK_HANDLER_TOKEN: "{{ requiredEnv "SLACK_HANDLER_TOKEN" }}"
