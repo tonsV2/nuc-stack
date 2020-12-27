@@ -83,6 +83,9 @@ environments:
   prod:
     values:
       - kubeContext: nuc
+      - kubewatcher:
+          installed: true
+          version: 1.0.0
       - surfEasyEdit:
           installed: true
           version: 1.3.0
@@ -109,6 +112,16 @@ environments:
           version: 9.3.2
 
 releases:
+  - name: kubewatcher
+    namespace: kubewatcher
+    chart: tons/kubewatcher
+    verify: true
+    version: {{ .Values.kubewatcher.version }}
+    installed: {{ .Values.kubewatcher.installed }}
+    kubeContext: {{ .Values.kubeContext }}
+    values:
+      - values/{{ .Environment.Name }}/kubewatcher-values.gotmpl
+
   - name: surf-easy-edit
     namespace: surf-easy-edit-{{ .Environment.Name }}
     chart: tons/surf-easy-edit

@@ -1,0 +1,33 @@
+config:
+  filters:
+    - kind: Pod
+      apiVersion: v1
+      conditions:
+        - status.containerStatuses[*].state.terminated.exitCode != 0
+      message:
+        template: "Pod: {NAME} in {NAMESPACE} terminated with nonzero exit code"
+        attributes:
+          NAME: metadata.name
+          NAMESPACE: metadata.namespace
+
+    - kind: Event
+      apiVersion: v1
+      conditions:
+        - type == Warning
+      message:
+        template: "Event: Warning {NAME} in {NAMESPACE} (reason: {REASON}, message: {MESSAGE})"
+        attributes:
+          NAME: metadata.name
+          NAMESPACE: metadata.namespace
+          REASON: reason
+          MESSAGE: message
+
+  handlers:
+    slack:
+      # TODO: For some reason the SLACK_HANDLER_CHANNEL variable won't be interpolated if the value begins with '#'
+      #  The current solution is simply to list specify the channel without the '#' prefix
+      channel: nuc
+      token: $SLACK_HANDLER_TOKEN
+
+env:
+  SLACK_HANDLER_TOKEN: "{{ requiredEnv "SLACK_HANDLER_TOKEN" }}"
