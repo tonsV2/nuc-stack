@@ -29,10 +29,13 @@ environments:
   dev:
     values:
       - kubeContext: nuc
+      - kubewatcher:
+          installed: false
+          version: 0
       - surfEasyEdit:
           installed: false
           version: 0
-      - surfEasyDatabase:
+      - surfEasyEditDatabase:
           installed: false
           version: 0
       - autoYoutubeDl:
@@ -45,8 +48,8 @@ environments:
           installed: false
           version: 0
       - whoamiMn:
-          installed: false
-          version: 0
+          installed: true
+          version: 0.7.0
       - chartmuseum:
           installed: false
           version: 0
@@ -56,6 +59,9 @@ environments:
   test:
     values:
       - kubeContext: nuc
+      - kubewatcher:
+          installed: false
+          version: 0
       - surfEasyEdit:
           installed: false
           version: 0
