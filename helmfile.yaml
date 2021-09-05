@@ -5,6 +5,9 @@ environments:
       - surfEasyEdit:
           installed: true
           version: 1.0.0
+      - surfKmdBookingGo:
+          installed: false
+          version: 0.1.0
       - surfEasyEditDatabase:
           installed: true
           version: 10.1.1
@@ -29,6 +32,9 @@ environments:
   dev:
     values:
       - kubeContext: nuc
+      - surfKmdBookingGo:
+          installed: false
+          version: 0
       - kubewatcher:
           installed: false
           version: 0
@@ -59,6 +65,9 @@ environments:
   test:
     values:
       - kubeContext: nuc
+      - surfKmdBookingGo:
+          installed: false
+          version: 0
       - kubewatcher:
           installed: false
           version: 0
@@ -89,6 +98,9 @@ environments:
   prod:
     values:
       - kubeContext: nuc
+      - surfKmdBookingGo:
+          installed: true
+          version: 0.1.0
       - kubewatcher:
           installed: true
           version: 1.2.0
@@ -176,6 +188,16 @@ releases:
     kubeContext: {{ .Values.kubeContext }}
     values:
       - values/{{ .Environment.Name }}/surf-screenshotter-values.yaml
+
+  - name: surf-kmd-booking-go
+    namespace: surf-kmd-booking-go-{{ .Environment.Name }}
+    chart: tons/surf-kmd-booking-go
+    verify: false
+    version: {{ .Values.surfKmdBookingGo.version }}
+    installed: {{ .Values.surfKmdBookingGo.installed }}
+    kubeContext: {{ .Values.kubeContext }}
+    values:
+      - values/{{ .Environment.Name }}/surf-kmd-booking-go-values.gotmpl
 
   - name: whoami-mn
     namespace: whoami-mn-{{ .Environment.Name }}

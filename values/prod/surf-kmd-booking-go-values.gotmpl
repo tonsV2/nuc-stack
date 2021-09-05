@@ -1,0 +1,6 @@
+bookingAuthenticationCode: "{{ requiredEnv "BOOKING_AUTHENTICATION_CODE" }}"
+
+ingress:
+  enabled: true
+  hostname: kmd-booking.surfstation.dk
+  certIssuer: letsencrypt-prod
