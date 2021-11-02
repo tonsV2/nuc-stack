@@ -7,7 +7,7 @@ environments:
           version: 1.0.0
       - surfKmdBookingGo:
           installed: false
-          version: 0.1.0
+          version: 0
       - surfEasyEditDatabase:
           installed: true
           version: 10.1.1
@@ -100,7 +100,7 @@ environments:
       - kubeContext: nuc
       - surfKmdBookingGo:
           installed: true
-          version: 0.1.0
+          version: 0.2.0
       - kubewatcher:
           installed: true
           version: 1.2.0
